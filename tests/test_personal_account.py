@@ -4,6 +4,7 @@ from locators.base_page_locators import HeaderLocators as Hl
 from locators.recovery_password_page_locators import RecoveryLocators as Rl
 from locators.personal_account_page_locators import PersonalAccountLocators as Pal
 from pages.auth_page import AuthPage
+from pages.personal_account_page import PersonalAccountPage
 
 
 @allure.feature("Личный кабинет")
@@ -17,6 +18,7 @@ class TestPersonalAccount:
         username = data_user.get("email")
         password = data_user.get("password")
         auth_page = AuthPage(driver)
+        personal_account_page = PersonalAccountPage(driver)
 
         with allure.step("Открываем главную страницу"):
             auth_page.open(Bd.URL_STELLAR_BURGERS)
@@ -28,10 +30,10 @@ class TestPersonalAccount:
             auth_page.auth_login(username, password)
 
         with allure.step("Переходим в личный кабинет"):
-            auth_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
+            personal_account_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
 
         with allure.step("Проверяем, что отображается вкладка 'Профиль'"):
-            assert auth_page.check_is_displayed(Pal.TAB_PROFILER), "Вкладка 'Профиль' не отображается"
+            assert personal_account_page.check_is_displayed(Pal.TAB_PROFILER), "Вкладка 'Профиль' не отображается"
 
     @allure.title('Переход в раздел "История заказов"')
     @allure.description('Проверяем, что при переходе в раздел "История заказов" отображаются заказы пользователя')
@@ -41,6 +43,7 @@ class TestPersonalAccount:
         username = user_payload.get("email")
         password = user_payload.get("password")
         auth_page = AuthPage(driver)
+        personal_account_page = PersonalAccountPage(driver)
 
         with allure.step("Открываем главную страницу"):
             auth_page.open(Bd.URL_STELLAR_BURGERS)
@@ -52,13 +55,13 @@ class TestPersonalAccount:
             auth_page.auth_login(username, password)
 
         with allure.step("Переходим в личный кабинет"):
-            auth_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
+            personal_account_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
 
         with allure.step("Переходим в раздел 'История заказов'"):
-            auth_page.click_element(Pal.TAB_HISTORY_ORDER)
+            personal_account_page.click_element(Pal.TAB_HISTORY_ORDER)
 
         with allure.step("Проверяем, что количество заказов совпадает с ожидаемым"):
-            list_orders = auth_page.find_elements(Pal.LIST_ORDERS_HISTORY)
+            list_orders = personal_account_page.find_elements(Pal.LIST_ORDERS_HISTORY)
             assert len(list_orders) == len(data_create_user_orders.get("orders")), \
                 "Количество заказов не совпадает с ожидаемым"
 
@@ -70,6 +73,7 @@ class TestPersonalAccount:
         username = data_user.get("email")
         password = data_user.get("password")
         auth_page = AuthPage(driver)
+        personal_account_page = PersonalAccountPage(driver)
 
         with allure.step("Открываем главную страницу"):
             auth_page.open(Bd.URL_STELLAR_BURGERS)
@@ -81,10 +85,10 @@ class TestPersonalAccount:
             auth_page.auth_login(username, password)
 
         with allure.step("Переходим в личный кабинет"):
-            auth_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
+            personal_account_page.click_element(Hl.BUTTON_PERSONAL_ACCOUNT)
 
         with allure.step("Нажимаем на кнопку 'Выход'"):
-            auth_page.click_element(Pal.TAB_EXIT)
+            personal_account_page.click_element(Pal.TAB_EXIT)
 
         with allure.step("Проверяем, что отображается кнопка 'Войти'"):
-            assert auth_page.check_is_displayed(Rl.BUTTON_ENTER), "Кнопка 'Войти' не отображается"
+            assert personal_account_page.check_is_displayed(Rl.BUTTON_ENTER), "Кнопка 'Войти' не отображается"
